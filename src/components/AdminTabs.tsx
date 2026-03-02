@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { Tabs, TabList, Tab, TabPanel, Box } from '@mui/joy';
 import type { SxProps } from '@mui/joy/styles/types';
@@ -8,6 +10,7 @@ export interface AdminTabItem {
   content: React.ReactNode;
   icon?: React.ReactNode;
   disabled?: boolean;
+  count?: number;
 }
 
 export interface AdminTabsProps {
@@ -16,7 +19,7 @@ export interface AdminTabsProps {
   defaultValue?: string;
   onChange?: (value: string) => void;
   lazy?: boolean;
-  actions?: React.ReactNode; // 🔥 Action Bar
+  actions?: React.ReactNode;
   sx?: SxProps;
 }
 
@@ -41,11 +44,9 @@ export const AdminTabs: React.FC<AdminTabsProps> = ({
     newValue: string | null
   ) => {
     if (!newValue) return;
-
     if (!isControlled) {
       setInternalValue(newValue);
     }
-
     onChange?.(newValue);
   };
 
@@ -54,7 +55,8 @@ export const AdminTabs: React.FC<AdminTabsProps> = ({
       value={currentValue}
       onChange={handleChange}
       sx={{
-        backgroundColor: 'background.body',
+        backgroundColor: 'background.surface',
+        borderRadius: 'md',
         ...sx,
       }}
     >
@@ -65,13 +67,14 @@ export const AdminTabs: React.FC<AdminTabsProps> = ({
           alignItems: 'center',
           borderBottom: '1px solid',
           borderColor: 'divider',
+          minHeight: 48,
         }}
       >
-        {/* Tabs */}
+        {/* Tab List */}
         <TabList
           sx={{
             flex: 1,
-            minHeight: 48,
+            border: 'none',
             overflowX: 'auto',
             scrollbarWidth: 'none',
             '&::-webkit-scrollbar': { display: 'none' },
@@ -91,11 +94,37 @@ export const AdminTabs: React.FC<AdminTabsProps> = ({
             >
               {tab.icon}
               {tab.label}
+              {tab.count !== undefined && (
+                <Box
+                  component="span"
+                  sx={{
+                    ml: 0.5,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minWidth: 20,
+                    height: 20,
+                    borderRadius: 'xl',
+                    bgcolor: 'neutral.100',
+                    color: 'text.secondary',
+                    fontSize: 'xs',
+                    fontWeight: 'lg',
+                    px: 0.75,
+                    lineHeight: 1,
+                    ...(currentValue === tab.value && {
+                      bgcolor: 'primary.softBg',
+                      color: 'primary.softColor',
+                    }),
+                  }}
+                >
+                  {tab.count}
+                </Box>
+              )}
             </Tab>
           ))}
         </TabList>
 
-        {/* 🔥 Action Bar */}
+        {/* Action Bar */}
         {actions && (
           <Box
             sx={{
@@ -121,7 +150,7 @@ export const AdminTabs: React.FC<AdminTabsProps> = ({
             value={tab.value}
             sx={{
               px: 0,
-              pt: 3,
+              py: 0,
             }}
           >
             {tab.content}

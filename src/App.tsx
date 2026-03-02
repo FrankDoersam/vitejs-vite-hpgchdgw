@@ -1,6 +1,7 @@
 import { CssVarsProvider } from '@mui/joy/styles';
-import { UsersPage } from './UsersPage';
-import theme from './theme';
+import UsersPage from './UsersPage';
+import theme from './lib/theme';
+
 
 function App() {
   return (
