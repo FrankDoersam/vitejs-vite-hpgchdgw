@@ -1,13 +1,15 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { CssVarsProvider } from '@mui/joy/styles';
-import { theme } from './theme';
-import { UsersPage } from './UsersPage';
+import { CssBaseline } from '@mui/joy';
+import App from './App';
+import theme from './theme';
 
-function App() {
-  return (
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
     <CssVarsProvider theme={theme}>
-      <UsersPage />
+      <CssBaseline />
+      <App />
     </CssVarsProvider>
-  );
-}
-
-export default App;
+  </React.StrictMode>
+);
